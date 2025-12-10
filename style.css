@@ -1,0 +1,586 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+#app {
+    max-width: 414px;
+    margin: 0 auto;
+    background: #fff;
+    min-height: 100vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.app-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.app-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+#today-date {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Tab Navigation */
+.tab-nav {
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    position: sticky;
+    top: 80px;
+    z-index: 99;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 1rem;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-button.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+    background: #fff;
+}
+
+.tab-button:hover:not(.active) {
+    background: #e9ecef;
+}
+
+/* Tab Content */
+.tab-content {
+    min-height: calc(100vh - 160px);
+}
+
+.tab-panel {
+    display: none;
+    padding: 1rem;
+    animation: fadeIn 0.2s ease-in;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Progress Section */
+.progress-section {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.progress-bar {
+    background: #e9ecef;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+/* Schedule Grid */
+.schedule-grid {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.grid-header {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr 1fr;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.header-cell {
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.time-slot {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.slot-label {
+    font-weight: 600;
+    color: #333;
+}
+
+.slot-time {
+    font-size: 0.75rem;
+    color: #667eea;
+}
+
+.dose-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr 1fr;
+}
+
+.dose-row {
+    display: contents;
+}
+
+.eyedrop-label {
+    padding: 1rem 0.5rem;
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #e9ecef;
+}
+
+.dose-cell {
+    padding: 0.5rem;
+    border-right: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dose-button {
+    width: 100%;
+    padding: 0.75rem 0.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.dose-button.pending {
+    background: #fff3cd;
+    color: #856404;
+    border: 2px solid #ffeaa7;
+}
+
+.dose-button.pending:hover {
+    background: #ffeaa7;
+    transform: scale(1.02);
+}
+
+.dose-button.completed {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 2px solid #bee5eb;
+}
+
+.dose-button.disabled {
+    background: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+    border: 2px solid #e9ecef;
+}
+
+/* Timer Section */
+.timer-section {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.timer-section.hidden {
+    display: none;
+}
+
+.timer-display {
+    margin-bottom: 1rem;
+}
+
+.timer-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #8B4513;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.timer-countdown {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #D2691E;
+    font-family: 'Courier New', monospace;
+}
+
+.stop-timer-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.stop-timer-btn:hover {
+    background: #c82333;
+    transform: scale(1.05);
+}
+
+/* History Tab */
+.history-list {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.history-item {
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.history-item:hover {
+    background: #f8f9fa;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.history-date {
+    font-weight: 600;
+    color: #333;
+}
+
+.history-stats {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.history-progress {
+    font-size: 0.85rem;
+    color: #667eea;
+    font-weight: 600;
+}
+
+.history-details {
+    display: none;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.history-details.expanded {
+    display: block;
+    animation: fadeIn 0.2s ease-in;
+}
+
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+    font-size: 0.75rem;
+}
+
+.history-cell {
+    text-align: center;
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.history-cell.header {
+    font-weight: 600;
+    background: #667eea;
+    color: white;
+}
+
+.history-cell.completed {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.history-cell.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* Settings Tab */
+.settings-section {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+}
+
+.settings-section h2 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.setting-group {
+    margin-bottom: 1rem;
+}
+
+.setting-group label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.setting-group input[type="time"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.setting-group input[type="time"]:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.eyedrop-setting {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.eyedrop-setting h3 {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.75rem;
+}
+
+.eyedrop-name {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.eyedrop-name:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.settings-description {
+    background: #e3f2fd;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border-left: 4px solid #2196f3;
+}
+
+.settings-description p {
+    margin: 0;
+    color: #1565c0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.color-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.color-input-group label {
+    font-weight: 600;
+    color: #333;
+    min-width: 120px;
+    margin: 0;
+}
+
+.color-picker {
+    width: 60px;
+    height: 40px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    background: none;
+    padding: 0;
+}
+
+.color-picker:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.color-preview {
+    width: 100px;
+    height: 30px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.slot-checkboxes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: #667eea;
+}
+
+.checkbox-group label {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.settings-actions {
+    display: flex;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.save-btn, .reset-btn {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.save-btn {
+    background: #667eea;
+    color: white;
+}
+
+.save-btn:hover {
+    background: #5a67d8;
+    transform: scale(1.02);
+}
+
+.reset-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.reset-btn:hover {
+    background: #5a6268;
+    transform: scale(1.02);
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 375px) {
+    .grid-header,
+    .dose-grid {
+        grid-template-columns: 60px 1fr 1fr 1fr 1fr;
+        font-size: 0.8rem;
+    }
+    
+    .header-cell,
+    .dose-cell {
+        padding: 0.5rem 0.25rem;
+    }
+    
+    .timer-countdown {
+        font-size: 2rem;
+    }
+    
+    .settings-actions {
+        flex-direction: column;
+    }
+}

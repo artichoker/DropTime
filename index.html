@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropTime - 目薬管理</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>DropTime</h1>
+            <div id="today-date"></div>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tab-nav">
+            <button class="tab-button active" data-tab="today">今日</button>
+            <button class="tab-button" data-tab="history">履歴</button>
+            <button class="tab-button" data-tab="settings">設定</button>
+        </nav>
+
+        <!-- Tab Contents -->
+        <main class="tab-content">
+            <!-- Today Tab -->
+            <div id="today-tab" class="tab-panel active">
+                <div class="progress-section">
+                    <div class="progress-text">
+                        <span id="progress-count">0 / 0</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="schedule-grid">
+                    <div class="grid-header">
+                        <div class="header-cell"></div>
+                        <div class="header-cell time-slot" data-slot="morning">
+                            <span class="slot-label">朝</span>
+                            <span class="slot-time" id="time-morning">07:00</span>
+                        </div>
+                        <div class="header-cell time-slot" data-slot="noon">
+                            <span class="slot-label">昼</span>
+                            <span class="slot-time" id="time-noon">12:00</span>
+                        </div>
+                        <div class="header-cell time-slot" data-slot="evening">
+                            <span class="slot-label">夕</span>
+                            <span class="slot-time" id="time-evening">18:00</span>
+                        </div>
+                        <div class="header-cell time-slot" data-slot="bedtime">
+                            <span class="slot-label">寝前</span>
+                            <span class="slot-time" id="time-bedtime">22:00</span>
+                        </div>
+                    </div>
+
+                    <div id="dose-grid" class="dose-grid">
+                        <!-- Dynamically generated dose buttons -->
+                    </div>
+                </div>
+
+                <div id="timer-section" class="timer-section hidden">
+                    <div class="timer-display">
+                        <span class="timer-label">次の目薬まで</span>
+                        <span id="timer-countdown" class="timer-countdown">5:00</span>
+                    </div>
+                    <button id="stop-timer" class="stop-timer-btn">タイマー停止</button>
+                </div>
+            </div>
+
+            <!-- History Tab -->
+            <div id="history-tab" class="tab-panel">
+                <div class="history-list">
+                    <div id="history-content">
+                        <!-- Dynamically generated history -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-panel">
+                <div class="settings-section">
+                    <h2>時間帯設定</h2>
+                    <div class="setting-group">
+                        <label for="time-setting-morning">朝</label>
+                        <input type="time" id="time-setting-morning" value="07:00">
+                    </div>
+                    <div class="setting-group">
+                        <label for="time-setting-noon">昼</label>
+                        <input type="time" id="time-setting-noon" value="12:00">
+                    </div>
+                    <div class="setting-group">
+                        <label for="time-setting-evening">夕</label>
+                        <input type="time" id="time-setting-evening" value="18:00">
+                    </div>
+                    <div class="setting-group">
+                        <label for="time-setting-bedtime">寝る前</label>
+                        <input type="time" id="time-setting-bedtime" value="22:00">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2>目薬設定</h2>
+                    <div class="settings-description">
+                        <p>目薬の名前とパッケージの色を設定して、識別しやすくできます。</p>
+                    </div>
+                    <div id="eyedrop-settings">
+                        <!-- Dynamically generated eyedrop settings -->
+                    </div>
+                </div>
+
+                <div class="settings-actions">
+                    <button id="save-settings" class="save-btn">設定を保存</button>
+                    <button id="reset-settings" class="reset-btn">デフォルトに戻す</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
