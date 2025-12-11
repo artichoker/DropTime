@@ -79,22 +79,28 @@ function loadDayLogs() {
 // Date Utilities
 function getTodayString() {
     const today = new Date();
-    return today.toISOString().split('T')[0]; // YYYY-MM-DD format
+    // Use local time instead of UTC to avoid timezone issues
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`; // YYYY-MM-DD format in local time
 }
 
 function formatDateForDisplay(dateString) {
-    const date = new Date(dateString + 'T00:00:00');
+    // Parse date string as local date to avoid timezone shift
+    const [year, month, day] = dateString.split('-').map(Number);
+    const date = new Date(year, month - 1, day); // month is 0-indexed in Date constructor
     const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
     const weekday = weekdays[date.getDay()];
     return `${year}年${month}月${day}日（${weekday}）`;
 }
 
 function getCurrentTime() {
     const now = new Date();
-    return now.toTimeString().slice(0, 5); // HH:mm format
+    // Ensure local time formatting
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`; // HH:mm format in local time
 }
 
 // Day Log Management
