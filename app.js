@@ -18,7 +18,8 @@ const DEFAULT_SETTINGS = {
         { id: 'A', name: '目薬A', slots: ['morning', 'noon', 'evening', 'bedtime'], color: '#4CAF50' },
         { id: 'B', name: '目薬B', slots: ['morning', 'noon', 'evening', 'bedtime'], color: '#2196F3' },
         { id: 'C', name: '目薬C', slots: ['morning', 'evening'], color: '#FF9800' }
-    ]
+    ],
+    dateRolloverTime: '00:00'
 };
 
 // Global State
@@ -46,7 +47,8 @@ function loadSettings() {
             // Validate and merge with defaults to handle missing properties
             return {
                 slots: { ...DEFAULT_SETTINGS.slots, ...parsed.slots },
-                eyeDrops: parsed.eyeDrops || DEFAULT_SETTINGS.eyeDrops
+                eyeDrops: parsed.eyeDrops || DEFAULT_SETTINGS.eyeDrops,
+                dateRolloverTime: parsed.dateRolloverTime || DEFAULT_SETTINGS.dateRolloverTime
             };
         }
     } catch (error) {
@@ -77,12 +79,32 @@ function loadDayLogs() {
 }
 
 // Date Utilities
+function getEffectiveDate(now = null, rolloverTime = null) {
+    if (!now) now = new Date();
+    if (!rolloverTime) rolloverTime = settings ? settings.dateRolloverTime : '00:00';
+    
+    // Parse rollover time
+    const [rolloverHour, rolloverMinute] = rolloverTime.split(':').map(Number);
+    
+    // Create rollover time for today
+    const todayRollover = new Date(now);
+    todayRollover.setHours(rolloverHour, rolloverMinute, 0, 0);
+    
+    // If current time is before rollover, it's still "yesterday" medically
+    let effectiveDate = new Date(now);
+    if (now < todayRollover) {
+        effectiveDate.setDate(effectiveDate.getDate() - 1);
+    }
+    
+    return effectiveDate;
+}
+
 function getTodayString() {
-    const today = new Date();
+    const effectiveDate = getEffectiveDate();
     // Use local time instead of UTC to avoid timezone issues
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
+    const year = effectiveDate.getFullYear();
+    const month = String(effectiveDate.getMonth() + 1).padStart(2, '0');
+    const day = String(effectiveDate.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`; // YYYY-MM-DD format in local time
 }
 
@@ -294,6 +316,12 @@ function stopTimer() {
 
 // Settings Functions
 function renderSettingsView() {
+    // Update date rollover time input
+    const rolloverInput = document.getElementById('date-rollover-time');
+    if (rolloverInput) {
+        rolloverInput.value = settings.dateRolloverTime;
+    }
+    
     // Update time inputs
     SLOT_IDS.forEach(slotId => {
         const input = document.getElementById(`time-setting-${slotId}`);
@@ -377,6 +405,12 @@ function renderSettingsView() {
 }
 
 function saveSettingsFromForm() {
+    // Save date rollover time
+    const rolloverInput = document.getElementById('date-rollover-time');
+    if (rolloverInput) {
+        settings.dateRolloverTime = rolloverInput.value;
+    }
+    
     // Save time slots
     SLOT_IDS.forEach(slotId => {
         const input = document.getElementById(`time-setting-${slotId}`);

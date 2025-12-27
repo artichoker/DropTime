@@ -411,6 +411,14 @@ body {
     border-color: #667eea;
 }
 
+.setting-help {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.25rem;
+    line-height: 1.4;
+}
+
 .eyedrop-setting {
     background: #f8f9fa;
     padding: 1rem;
