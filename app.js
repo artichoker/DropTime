@@ -500,6 +500,12 @@ function renderHistoryView() {
         item.appendChild(header);
         item.appendChild(details);
         container.appendChild(item);
+        
+        // Add event listeners for editable history cells
+        const editableCells = details.querySelectorAll('.history-cell.editable');
+        editableCells.forEach(cell => {
+            cell.addEventListener('click', handleHistoryDoseEdit);
+        });
     });
 }
 
@@ -514,12 +520,18 @@ function renderHistoryDetails(dayLog) {
                 const dose = dayLog.doses.find(d => d.dropId === eyeDrop.id && d.slot === slotId);
                 if (dose && dose.takenAt) {
                     const time = new Date(dose.takenAt).toTimeString().slice(0, 5);
-                    grid.push(`済 ${time}`);
+                    grid.push({ type: 'completed', content: `済 ${time}` });
                 } else {
-                    grid.push('未');
+                    grid.push({ 
+                        type: 'pending', 
+                        content: '未',
+                        dropId: eyeDrop.id,
+                        slot: slotId,
+                        date: dayLog.date
+                    });
                 }
             } else {
-                grid.push('―');
+                grid.push({ type: 'disabled', content: '―' });
             }
         });
     });
@@ -528,14 +540,60 @@ function renderHistoryDetails(dayLog) {
         <div class="history-grid">
             ${grid.map((cell, index) => {
                 let className = 'history-cell';
-                if (index < 5) className += ' header';
-                else if (cell.includes('済')) className += ' completed';
-                else if (cell === '未') className += ' pending';
+                let content = '';
+                let dataAttributes = '';
                 
-                return `<div class="${className}">${cell}</div>`;
+                if (index < 5) {
+                    className += ' header';
+                    content = cell;
+                } else if (typeof cell === 'object') {
+                    if (cell.type === 'completed') {
+                        className += ' completed';
+                        content = cell.content;
+                    } else if (cell.type === 'pending') {
+                        className += ' pending editable';
+                        content = cell.content;
+                        dataAttributes = `data-drop-id="${cell.dropId}" data-slot="${cell.slot}" data-date="${cell.date}"`;
+                    } else {
+                        content = cell.content;
+                    }
+                } else {
+                    content = cell;
+                }
+                
+                return `<div class="${className}" ${dataAttributes}>${content}</div>`;
             }).join('')}
         </div>
     `;
+}
+
+// History edit handler
+function handleHistoryDoseEdit(event) {
+    const cell = event.target;
+    const dropId = cell.dataset.dropId;
+    const slot = cell.dataset.slot;
+    const date = cell.dataset.date;
+    
+    if (!dropId || !slot || !date) return;
+    
+    // Find the day log and dose
+    const dayLog = dayLogs.find(log => log.date === date);
+    if (!dayLog) return;
+    
+    const dose = dayLog.doses.find(d => d.dropId === dropId && d.slot === slot);
+    if (!dose || dose.takenAt) return; // Only allow editing of pending doses
+    
+    // Confirm action
+    if (confirm('この目薬を「済」に変更しますか？')) {
+        // Set current time as taken time
+        dose.takenAt = new Date().toISOString();
+        
+        // Save changes
+        saveDayLogs();
+        
+        // Re-render history view to reflect changes
+        renderHistoryView();
+    }
 }
 
 // Tab Navigation

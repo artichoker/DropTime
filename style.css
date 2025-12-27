@@ -419,6 +419,16 @@ body {
     line-height: 1.4;
 }
 
+.history-cell.editable {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.history-cell.editable:hover {
+    background-color: #e3f2fd;
+    border: 1px solid #2196f3;
+}
+
 .eyedrop-setting {
     background: #f8f9fa;
     padding: 1rem;
